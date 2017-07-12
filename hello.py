@@ -14,7 +14,7 @@ from flask_mail import Mail
 from threading import  Thread
 import os
 
-basedir = os.path.abspath(os.path.dirname(__file__))
+
 #os.path.abspath(path)返回path规范化的绝对路径
 #os.path.dirname(path)返回path最后的文件名
 
