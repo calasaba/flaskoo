@@ -1,6 +1,6 @@
 #!usr/bin/env python3
 #coding = utf-8
-from flask import  Flask, render_template, redirect, url_for, session, flash
+from flask import  Flask, render_template, redirect, url_for, session, flash,current_app
 from flask_script import Manager,Shell
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
@@ -10,9 +10,10 @@ from wtforms import StringField, SubmitField
 from wtforms.validators import Required
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, MigrateCommand
-from flask_mail import Mail
-from threading import  Thread
+from flask_mail import Mail, Message
+from threading import Thread
 import os
+
 
 
 #os.path.abspath(path)返回path规范化的绝对路径
@@ -21,6 +22,7 @@ import os
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'hard to guess string'
 #数据库配置
+basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = \
     'sqlite:///' + os.path.join(basedir, 'data.sqlite')
 #程序使用的URL必须保存到Flask配置对象的SQLALCHEMY_DATABASE_URI键中
@@ -34,7 +36,7 @@ bootstrap = Bootstrap(app)
 moment = Moment(app)
 mail = Mail(app)
 #邮件配置
-'''
+
 app.config['MAIL_SERVER'] = 'smtp.163.com'
 app.config['MAIL_PORT'] = 465
 #app.config['MAIL_USE_TLS'] = True
@@ -44,8 +46,9 @@ app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = "calasaba123@163.com"
 #app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
 app.config['MAIL_PASSWORD'] = "jie111cwj"
-app.config['FLASKY_MAIL_SUBJECT_PREFIX'] = '[Flasky]'
-
+#app.config['FLASKY_MAIL_SUBJECT_PREFIX'] = '[Flasky]'
+#app.config['FLASKY_ADMIN'] = "853141976@qq.com"
+'''
 app.config['MAIL_SERVER'] = 'smtp.qq.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_TLS'] = True
@@ -88,7 +91,7 @@ manager.add_command('db',MigrateCommand)
 def make_shall_content():
     return dict(app = app, db = db, User = User, Role = Role)
 manager.add_command('Shell', Shell(make_context = make_shall_content))
-
+#表单类
 class NameFrom(FlaskForm):
     name = StringField('What is youe name ?', validators = [Required()])
     submit = SubmitField('Submit')
@@ -118,11 +121,20 @@ def index():
             db.session.add(user)
             db.session.commit()
             session['known'] = False
-            '''
-            if app.config['FLASKY_ADMIN']:
-                send_email(app.config['FLASKY_ADMIN'], 'New User',
-                           'mail/new_user', user = user)
-            '''
+
+            if True:
+
+                '''
+                msg = Message('New User is coming!', sender="calasaba123@163.com",
+                              recipients=["853141976@qq.com"])
+                msg.body = "快出来，接客了"
+                with app.app_context():
+                    mail.send(msg)
+                '''
+                #send_email(app.config['FLASKY_ADMIN'], 'New User',
+                           #'mail/new_user', user = user)
+
+
         else:
             session['known'] = True
         session['name'] = form.name.data
