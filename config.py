@@ -13,7 +13,7 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     #email设置，email目前不能用
     FLASKY_MAIL_SUBJECT_PREFIX = '[Flasky]'
-    FLASKY_MAIL_SENDER = 'Flasky Admin < 853141976 @ qq.com > '
+    FLASKY_MAIL_SENDER = 'Flasky Admin < 853141976@qq.com > '
     FLASKY_ADMIN = os.environ.get('FLASKY_ADMIN')
     #执行对当前配置环境的初始化
     @staticmethod
