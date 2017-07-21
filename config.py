@@ -12,25 +12,20 @@ class Config:
     # 如果设置成 True (默认情况)，Flask-SQLAlchemy 将会追踪对象的修改并且发送信号。这需要额外的内存， 如果不必要的可以禁用它。
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     #email设置，email目前不能用
+    MAIL_SERVER = 'smtp.qq.com'
+    MAIL_PORT = 465
+    MAIL_USE_SSL = True
+    MAIL_USERNAME = "853141976@qq.com"
+    MAIL_PASSWORD = "icrzguuprjmmbedh"
+
     FLASKY_MAIL_SUBJECT_PREFIX = '[Flasky]'
     FLASKY_MAIL_SENDER = 'Flasky Admin < 853141976@qq.com > '
     FLASKY_ADMIN = os.environ.get('FLASKY_ADMIN')
-    #执行对当前配置环境的初始化
-    @staticmethod
-    def init_app(app):
-        pass
 
-class DevelopmentConfig(Config):
-    #邮箱设置，邮箱目前不能用
-    DEBUG = True
-    MAIL_SERVER = 'smtp.163.com'
-    MAIL_PORT = 465
     # app.config['MAIL_USE_TLS'] = True
-    MAIL_USE_SSL = True
+
     # app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
-    MAIL_USERNAME = "calasaba123@163.com"
-    # app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
-    MAIL_PASSWORD = "jie111cwj"
+
     # app.config['FLASKY_MAIL_SUBJECT_PREFIX'] = '[Flasky]'
     # app.config['FLASKY_ADMIN'] = "853141976@qq.com"
     '''
@@ -42,6 +37,15 @@ class DevelopmentConfig(Config):
     app.config['MAIL_USERNAME'] = "853141976@qq.com"
     app.config['MAIL_PASSWORD'] = "icrzguuprjmmbedh"
     '''
+
+
+    #执行对当前配置环境的初始化
+    @staticmethod
+    def init_app(app):
+        pass
+
+class DevelopmentConfig(Config):
+    DEBUG = True
     # 程序使用的URL必须保存到Flask配置对象的SQLALCHEMY_DATABASE_URI键中
     #配置开发环境的数据库地址
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \

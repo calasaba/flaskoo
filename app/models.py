@@ -3,6 +3,9 @@ from . import db
 from . import login_manger
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from flask import current_app
+
 #generate_password(password, method=pbkdf2:sha1, salt_length=8)
 #这个函数讲原始密码作为参数输入，以字符串形式输出密码散列值，输出的值可保存在用户数据库中
 
@@ -39,7 +42,25 @@ class User(db.Model, UserMixin):
 
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
-
+    #确认账户
+    confirmed = db.Column(db.Boolean, default = False)
+    #生成一个令牌，默认有效时间为一个小时
+    def generate_confirmation_token(self, expiration = 3600):
+        s = Serializer(current_app.config["SECRET_KEY"], expiration)
+        return s.dumps({'confirm' : self.id})
+        #dumps为指定的数据生成一个加密签名，然后对数据和签名进行序列化，生成令牌字符串
+    def confirm(self, token):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token)
+            #loads方法解码令牌，唯一参数是令牌字符串
+        except:
+            return False
+        if data.get('confirm') != self.id:
+            return  False
+        self.confirmed = True
+        db.session.add(self)
+        return True
 
     def __repr__(self):
         return '<User %r>' % self.username
