@@ -20,8 +20,8 @@ class Config:
 
     FLASKY_MAIL_SUBJECT_PREFIX = '[Flasky]'
     FLASKY_MAIL_SENDER = 'Flasky Admin < 853141976@qq.com > '
-    FLASKY_ADMIN = os.environ.get('FLASKY_ADMIN')
-
+    #FLASKY_ADMIN = os.environ.get('FLASKY_ADMIN')
+    FLASKOO_ADMIN = "john@explame.com"
     # app.config['MAIL_USE_TLS'] = True
 
     # app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
